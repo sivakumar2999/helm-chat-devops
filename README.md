@@ -2,6 +2,9 @@
 
 # 1. Generate java 17 app using https://start.spring.io/
 
+http://localhost:8080/actuator
+http://localhost:8080/api/test
+
 # 2.DockerFile
 
 # 3.Generate helm chat using below commands

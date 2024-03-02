@@ -1,10 +1,10 @@
-package com.app.amaze;
+package com.app.gen;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AmazeAppApplicationTests {
+class GenAppApplicationTests {
 
 	@Test
 	void contextLoads() {

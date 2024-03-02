@@ -1,13 +1,13 @@
-package com.app.amaze;
+package com.app.gen;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AmazeAppApplication {
+public class GenAppApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AmazeAppApplication.class, args);
+		SpringApplication.run(GenAppApplication.class, args);
 	}
 
 }
