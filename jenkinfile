@@ -12,16 +12,7 @@ pipeline {
             steps {
                 sh 'docker build -t gen-app .'
             }
-        }
-        stage('Docker Push') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerHubCredentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                    sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
-                    sh 'docker tag gen-app:latest $DOCKER_USER/gen-app:latest'
-                    sh 'docker push $DOCKER_USER/gen-app:latest'
-                }
-            }
-        }
+        }       
         stage('ECR Push') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'ecrCredentials', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
