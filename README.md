@@ -5,7 +5,7 @@
 # 2.DockerFile
 
 # 3.Generate helm chat using below commands
- helm create amaze-app
+ helm create gen-app
 
 # 4. update app value in Chart.yml and values.yaml chat file like
 

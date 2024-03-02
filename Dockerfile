@@ -9,12 +9,12 @@ LABEL maintainer="example@example.com"
 WORKDIR /app
 
 # Copy the jar to the container
-COPY ./target/amaze-app.jar /app
+COPY ./target/gen-app.jar /app
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
 
 # Run the jar file 
-ENTRYPOINT ["java","-jar","/app/amaze-app.jar"]
+ENTRYPOINT ["java","-jar","/app/gen-app.jar"]
 
 

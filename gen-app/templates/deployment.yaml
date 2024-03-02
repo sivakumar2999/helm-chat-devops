@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "amaze-app.fullname" . }}
+  name: {{ include "gen-app.fullname" . }}
   labels:
-    {{- include "amaze-app.labels" . | nindent 4 }}
+    {{- include "gen-app.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "amaze-app.selectorLabels" . | nindent 6 }}
+      {{- include "gen-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "amaze-app.labels" . | nindent 8 }}
+        {{- include "gen-app.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -27,7 +27,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "amaze-app.serviceAccountName" . }}
+      serviceAccountName: {{ include "gen-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

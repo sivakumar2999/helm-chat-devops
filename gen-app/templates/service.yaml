@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "amaze-app.fullname" . }}
+  name: {{ include "gen-app.fullname" . }}
   labels:
-    {{- include "amaze-app.labels" . | nindent 4 }}
+    {{- include "gen-app.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,4 +12,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "amaze-app.selectorLabels" . | nindent 4 }}
+    {{- include "gen-app.selectorLabels" . | nindent 4 }}

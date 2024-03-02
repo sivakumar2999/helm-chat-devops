@@ -11,7 +11,7 @@
 	<groupId>com.amaze</groupId>
 	<artifactId>amaze</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>amaze-app</name>
+	<name>gen-app</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>17</java.version>
