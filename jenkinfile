@@ -31,11 +31,11 @@ pipeline {
                 }
             }
         }
-        stage('Deploy to EKS') {
+        stage('Helm Deploy') {
             steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                    sh 'export KUBECONFIG=$KUBECONFIG'
-                    sh 'helm upgrade --install gen-app ./helm/gen-app --set image.repository=$DOCKER_USER/gen-app,image.tag=latest'
+                withCredentials([usernamePassword(credentialsId: 'ecrCredentials', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    sh 'aws eks update-kubeconfig --region <your-region> --name <your-eks-cluster-name>'
+                    sh 'helm upgrade --install gen-app ./helm-chart --set image.repository=<your-ecr-repository-url>/gen-app,image.tag=latest'
                 }
             }
         }
