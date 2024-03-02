@@ -1,5 +1,6 @@
 # Start with a base image containing Java runtime
 FROM openjdk:17-jdk-alpine
+#FROM adoptopenjdk:17-jdk-hotspot
 
 # Add Maintainer Info
 LABEL maintainer="example@example.com"
