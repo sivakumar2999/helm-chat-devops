@@ -5,6 +5,7 @@
 http://localhost:8080/actuator
 http://localhost:8080/api/test
 
+sh build.sh 
 # 2.DockerFile
 
 # 3.Generate helm chat using below commands

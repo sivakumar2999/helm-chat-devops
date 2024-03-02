@@ -9,7 +9,7 @@ LABEL maintainer="example@example.com"
 WORKDIR /app
 
 # Copy the jar to the container
-COPY ./target/gen-app.jar /app
+COPY ./target/gen-0.0.1-SNAPSHOT.jar /app
 
 # Make port 8080 available to the world outside this container
 EXPOSE 8080
