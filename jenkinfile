@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                //sh 'mvn clean package'
+                sh build.sh
+            }
+        }
+        stage('Docker Build') {
+            steps {
+                sh 'docker build -t gen-app .'
+            }
+        }
+        stage('Docker Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerHubCredentials', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    sh 'docker login -u $DOCKER_USER -p $DOCKER_PASS'
+                    sh 'docker tag gen-app:latest $DOCKER_USER/gen-app:latest'
+                    sh 'docker push $DOCKER_USER/gen-app:latest'
+                }
+            }
+        }
+        stage('ECR Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'ecrCredentials', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    sh 'aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <your-ecr-repository-url>'
+                    sh 'docker tag gen-app:latest <your-ecr-repository-url>/gen-app:latest'
+                    sh 'docker push <your-ecr-repository-url>/gen-app:latest'
+                }
+            }
+        }
+        stage('Deploy to EKS') {
+            steps {
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                    sh 'export KUBECONFIG=$KUBECONFIG'
+                    sh 'helm upgrade --install gen-app ./helm/gen-app --set image.repository=$DOCKER_USER/gen-app,image.tag=latest'
+                }
+            }
+        }
+    }
+}
