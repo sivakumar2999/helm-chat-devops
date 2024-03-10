@@ -22,13 +22,31 @@ pipeline {
                 }
             }
         }
+        stage('Push Helm Chart to ECR') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'ecrCredentials', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    sh 'aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <your-ecr-repository-url>'
+                    sh 'docker save -o gen-app.tar <your-ecr-repository-url>/gen-app:latest'
+                    sh 'aws s3 cp gen-app.tar s3://<your-s3-bucket>/gen-app.tar'
+                    sh 'argocd app create gen-app --repo https://github.com/<your-github-repo> --path helm-chart --dest-server https://<your-argocd-server> --dest-namespace <your-argocd-namespace> --helm-set image.repository=<your-ecr-repository-url>/gen-app,image.tag=latest'
+                    sh 'argocd app sync gen-app'
+                }
+            }
+        }
         stage('Helm Deploy') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'ecrCredentials', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                     sh 'aws eks update-kubeconfig --region <your-region> --name <your-eks-cluster-name>'
                     sh 'helm upgrade --install gen-app ./helm-chart --set image.repository=<your-ecr-repository-url>/gen-app,image.tag=latest'
+                sh 'kubectl get pods -l app=gen -o name | xargs -I {} kubectl logs {}'
+                stage('Get Ingress') {
+                    steps {
+                        sh 'kubectl get ingress'
+                    }
                 }
+                
             }
+
         }
     }
 }
